@@ -9,14 +9,17 @@ app.use(express.json());
 
 const port = process.env.PORT || 3001;
 
-app.use("/api", apiRoutes);
-
 const MONGO_URL = 'mongodb+srv://inbalsamucha:dudi1234321@cluster0.4x2kvyc.mongodb.net/';
-mongoose.Promise = Promise;
+// mongoose.Promise = Promise;
+// mongoose.connect(MONGO_URL)
+// .then(() => {console.log('connected to mongoose')})
+// .catch(error => console.log(error));
 mongoose.connect(MONGO_URL)
-.then(() => {console.log('connected to mongoose')})
-.catch(error => console.log(error));
+.then(() => console.log('connected to moongose'))
+.catch(err => console.log(err));
 
+
+app.use("/api", apiRoutes);
 
 app.listen(port, () => {
     console.log(`app is listening to port ${port}`)
