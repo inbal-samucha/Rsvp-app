@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, {  Schema } from "mongoose";
 
 export enum EventName {
     WEDDING = 'wedding', //חתונה
@@ -17,11 +17,12 @@ export enum EvenStatus {
 
 const EventSchema: Schema = new Schema(
     {
-    name: { type: String, enum: EventName, required: true}, //TODO: if i change to something that not in the enum it is still work
+    type: { type: String, enum: EventName, required: true}, //TODO: if i change to something that not in the enum it is still work
     date: { type: Date, required: true},
+    hosts_name:{ type: String, required: true},
     location: { type: String },
     description: { type: String },
-    status: { type: String, enum: EvenStatus, default:EvenStatus.UPCOMING }
+    status: { type: String, enum: EvenStatus, default:EvenStatus.UPCOMING }//TODO: after the date of the event coming change the staus to past
     },
     {
         timestamps: true

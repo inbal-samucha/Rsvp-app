@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, {  Schema } from "mongoose";
 
 const InviteesSchema: Schema = new Schema(
     {
@@ -7,8 +7,8 @@ const InviteesSchema: Schema = new Schema(
     email: { type: String},
     phone: { type: String, required: true },
     arrival_confirmed: { type: Boolean, default: false },
-    arrival_declined: { type: Boolean, default: false },
-    number_of_peopleArriving: { type: Number, default: 1}, //TODO: check if defult = 1
+    arrival_declined: { type: Boolean, default: false },//TODO: if update to true then change the number_of_people_arriving to 0
+    number_of_people_arriving: { type: Number, default: 1}, //TODO: check if defult = 1
     event_id: { type: Schema.Types.ObjectId, required: true, ref: 'events'}
     },
     {

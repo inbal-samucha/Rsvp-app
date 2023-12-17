@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+
 import Invitees from "../models/Invitees.ts";
+
+
 
 const createInvitees = async (req: Request, res: Response, next: NextFunction) => {
     const { first_name, last_name, email, phone, event_id} = req.body;
@@ -10,22 +13,12 @@ const createInvitees = async (req: Request, res: Response, next: NextFunction) =
 }
 
 const getAllInvitees = async (req: Request, res: Response, next: NextFunction) => {
-    const { event_id } = req.query;
-    
-    const invitees = await Invitees.find({ event_id });
+    const  event_id  = req.params.id; //TODO: check if there is such event id if no throw error
+ 
+    //TODO: req. quuery need to be case sensitive
+    const invitees = await Invitees.find({ event_id, ...req.query }); //find invitees by filter of req.query (like arrival_confirmed)
 
     return res.status(200).json(invitees);
-}
-
-//TODO:  get all invitees with one of this filters
-const getOneInvited = async (req: Request, res: Response, next: NextFunction) => {
-    // const { first_name, last_name, phone } = req.query;
-
-    const invited_id  = req.params.id; //invited_id
-    
-    const invited = await Invitees.findById(invited_id);
-
-    return res.status(200).json(invited);
 }
 
 const updateOneInvited = async (req: Request, res: Response, next: NextFunction) => {
@@ -46,4 +39,4 @@ const deleteOneInvited = async (req: Request, res: Response, next: NextFunction)
 
 
 
-export { createInvitees, getAllInvitees, getOneInvited, updateOneInvited, deleteOneInvited };
+export { createInvitees, getAllInvitees, updateOneInvited, deleteOneInvited };
