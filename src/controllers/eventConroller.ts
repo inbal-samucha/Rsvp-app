@@ -41,4 +41,11 @@ const deleteOneEvent = async (req: Request, res: Response, next: NextFunction) =
     return res.status(200).json({message: 'event was deleted'});
 }
 
-export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent };
+const checkToEjs = async (req: Request, res: Response, next: NextFunction) => {
+    const eventId = req.params.id;
+    const event = await Event.findById(eventId); 
+
+    return res.render('home', {event});
+}
+
+export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent, checkToEjs };
