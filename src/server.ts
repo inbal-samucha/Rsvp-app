@@ -5,8 +5,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
 
-import apiRoutes from './routes/main.ts';
 
+import apiRoutes from './routes/main.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
