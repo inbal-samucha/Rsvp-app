@@ -20,11 +20,8 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 const port = process.env.PORT || 3001;
 
-const MONGO_URL = 'mongodb+srv://inbalsamucha:dudi1234321@cluster0.4x2kvyc.mongodb.net/'; //TODO: move this url to .env
-// mongoose.Promise = Promise;
-// mongoose.connect(MONGO_URL)
-// .then(() => {console.log('connected to mongoose')})
-// .catch(error => console.log(error));
+const MONGO_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.4x2kvyc.mongodb.net/`; 
+
 mongoose.connect(MONGO_URL)
 .then(() => console.log('connected to moongose'))
 .catch(err => console.log(err));

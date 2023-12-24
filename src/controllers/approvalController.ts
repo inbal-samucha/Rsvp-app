@@ -3,8 +3,19 @@ import Invitees from "../models/Invitees.ts";
 
 const getApprovalForm = async(req: Request, res: Response, next: NextFunction) => {
     const invitedId= req.params.invitedId;
-    
-    res.render('approval_form', {invitedId});
+
+    try{
+        const invited = await Invitees.findById(invitedId);
+        if(!invited){
+            throw new Error('No such invited id')
+        }
+        
+        res.render('approval_form', {invitedId});
+    }catch(err){
+        console.log(err)
+        throw new Error('No such invited id')
+    }
+
 }
 
 const putApprovalForm = async(req: Request, res: Response, next: NextFunction) => { //TODO: check if i can merge this function to updateOneInvitees in iniviteesControllers 
@@ -22,8 +33,9 @@ const putApprovalForm = async(req: Request, res: Response, next: NextFunction) =
         arrival_confirmed: isComing,
         number_of_people_arriving: numberOfPeopleArriving
     }
-    const  invited_id  = req.params.invitedId;//invited _id TODO: check if the inviteed id exist
-        
+
+    const  invited_id  = req.params.invitedId;
+    
     const invited = await Invitees.findByIdAndUpdate(invited_id, payload , { new: true});
 
     res.send(invited) //TODO: redirect to thank you page

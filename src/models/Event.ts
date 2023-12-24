@@ -17,7 +17,7 @@ export enum EvenStatus {
 
 const EventSchema: Schema = new Schema(
     {
-    type: { type: String, enum: EventName, required: true}, //TODO: if i change to something that not in the enum it is still work
+    type: { type: String, enum: EventName, required: true}, 
     date: { type: Date, required: true},
     hosts_name:{ type: String, required: true},
     location: { type: String },
