@@ -12,7 +12,7 @@ const InviteesSchema: Schema = new Schema(
     first_name: { type: String, required: true},
     last_name: { type: String, required: true},
     email: { type: String},
-    phone: { type: String,unique: true, required: true }, 
+    phone: { type: String,unique: true, required: true }, //TODO: when the client write the phone number you need to change it to +972 for sending to him sms
     arrival_confirmed: { type: String, enum: ArrivalConfirmed , default: ArrivalConfirmed.INITIAL },
     number_of_people_arriving: { type: Number, default: 1}, //TODO: check if defult = 1
     event_id: { type: Schema.Types.ObjectId, required: true, ref: 'events'}

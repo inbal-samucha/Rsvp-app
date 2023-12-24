@@ -22,7 +22,6 @@ const getAllInvitees = async (req: Request, res: Response, next: NextFunction) =
         throw new Error('No such event id')
     }
 
-   
     const invitees = await Invitees.find({ eventId, ...req.query }); //find invitees by filter of req.query (like arrival_confirmed)
 
     return res.status(200).json(invitees);
