@@ -1,12 +1,12 @@
 import express from 'express';
-import { getApprovalForm, postApprovalForm } from '../controllers/approvalController.ts';
+import { getApprovalForm, putApprovalForm } from '../controllers/approvalController.ts';
 
 const approvalRoutes = express.Router();
 
-// approvalRoutes.get('/:inviteedId', getApprovalForm);
-// approvalRoutes.post('/:inviteedId', postApprovalForm);
-approvalRoutes.get('/', getApprovalForm);
-approvalRoutes.post('/', postApprovalForm);
+approvalRoutes.get('/:invitedId', getApprovalForm);
+approvalRoutes.put('/:invitedId', putApprovalForm);
+// approvalRoutes.get('/', getApprovalForm);
+// approvalRoutes.post('/', postApprovalForm);
 
 
 

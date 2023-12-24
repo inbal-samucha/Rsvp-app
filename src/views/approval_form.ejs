@@ -3,32 +3,51 @@
 <%- include('partitial/head.ejs') %>
 <body>
     <h1>Form</h1>
-    <%= inviteedId %>
-    <form method="post" action="/api/approval">
-        <fieldset>
-        <legend>Form</legend>
-          
-          <label>first name</label>
-          <input type="text" name="fname">
-  
-          <label>last name</label>
-          <input type="text" name="lname">
-  
-          <div class="check">
-            <p>are you coming? </p>
-            <input type="radio" name="is_coming" value="true">
-            <label>Yes</label>
-            <input type="radio" name="is_coming" value="false">
-            <label>No</label>
-            </div>
-          
-          <br>
-            <label>number of people arriving</label>
-            <input type="number" name="number_of_poeple_arriving" min="0" max="6">
-  
-          <input type="submit" value="Send">
-          
-        </fieldset>
-      </form>
+
+    <p> invited id: <%= invitedId %></p>
+   
+    <form id="myForm" >
+      <fieldset>
+      <legend>אישור הגעה</legend>
+        
+        <label>שם פרטי:</label>
+        <input type="text" name="fname">
+
+        <label>שם משפחה:</label>
+        <input type="text" name="lname">
+
+        <div class="check">
+          <p>האם אתה מגיע? </p>
+          <input type="radio" name="is_coming" value="true">
+          <label>כן</label>
+          <input type="radio" name="is_coming" value="false">
+          <label>לא</label>
+          </div>
+        
+        <label>מספר האנשים שמגיעים:</label>
+          <input type="number" name="number_of_people_arriving" min="0" max="6">
+
+          <button type="button" onclick="submitForm()">שלח</button>
+        
+      </fieldset>
+    </form>    
+
+
+      <script>
+        function submitForm() {
+          const form = document.getElementById('myForm');
+          const formData = new FormData(form);
+          const invitedId = '<%= invitedId %>';
+    
+          fetch(`/api/approval/${invitedId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded', // Set the content type
+              },
+              body: new URLSearchParams(formData).toString() // Encode form data properly
+            })
+        }
+      </script>
+      
 </body>
 </html>
