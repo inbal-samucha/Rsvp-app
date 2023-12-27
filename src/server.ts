@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 
 
 import apiRoutes from './routes/main.ts';
+import { sendWhatsappWithMetaCloudApi, sendWhatsappWithTwilio } from './utils/sms.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,6 +27,8 @@ mongoose.connect(MONGO_URL)
 .then(() => console.log('connected to moongose'))
 .catch(err => console.log(err));
 
+// sendWhatsappWithTwilio();
+// sendWhatsappWithMetaCloudApi();
 
 app.use("/api", apiRoutes);
 
