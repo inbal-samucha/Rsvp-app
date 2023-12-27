@@ -6,48 +6,32 @@
 
     <p> invited id: <%= invitedId %></p>
    
-    <form id="myForm" >
+    <form method="post" action="/api/approval/<%= invitedId %>">
       <fieldset>
-      <legend>אישור הגעה</legend>
-        
-        <label>שם פרטי:</label>
+      <legend>Form</legend>
+
+        <label>first name</label>
         <input type="text" name="fname">
 
-        <label>שם משפחה:</label>
+        <label>last name</label>
         <input type="text" name="lname">
 
         <div class="check">
-          <p>האם אתה מגיע? </p>
+          <p>are you coming? </p>
           <input type="radio" name="is_coming" value="true">
-          <label>כן</label>
+          <label>Yes</label>
           <input type="radio" name="is_coming" value="false">
-          <label>לא</label>
+          <label>No</label>
           </div>
-        
-        <label>מספר האנשים שמגיעים:</label>
+
+        <br>
+          <label>number of people arriving</label>
           <input type="number" name="number_of_people_arriving" min="0" max="6">
 
-          <button type="button" onclick="submitForm()">שלח</button>
-        
+        <input type="submit" value="Send">
+
       </fieldset>
-    </form>    
-
-
-      <script>
-        function submitForm() {
-          const form = document.getElementById('myForm');
-          const formData = new FormData(form);
-          const invitedId = '<%= invitedId %>';
-    
-          fetch(`/api/approval/${invitedId}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded', // Set the content type
-              },
-              body: new URLSearchParams(formData).toString() // Encode form data properly
-            })
-        }
-      </script>
+    </form>
       
 </body>
 </html>
