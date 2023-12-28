@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('partitial/head.ejs') %>
+<%- include('partitial/head.ejs', { pageTitle: 'approval form',  pageSpecificCSS: '/css/approval_form.css' }) %>
 <body>
     <h1>Form</h1>
 
-    <p> invited id: <%= invitedId %></p>
-   
+    <p> invited id: <%= invitedId %>
+        fname: <%= invited.first_name %>
+    </p>
+
+    <img src="https://play-lh.googleusercontent.com/F08xzOXf7dciZyw-BgIKalkQlkpCmAzQMfaTa2B-lc4yp-05O80XWUCntHkGH61CwyM" >
+
+    <div class="form">
     <form method="post" action="/api/approval/<%= invitedId %>">
       <fieldset>
-      <legend>Form</legend>
+      <legend>אישור הגעה</legend>
 
-        <label>first name</label>
-        <input type="text" name="fname">
-
-        <label>last name</label>
-        <input type="text" name="lname">
+      <p>שלום <%= invited.first_name %> <%= invited.last_name %> אנא אשר הגעתך</p>
 
         <div class="check">
-          <p>are you coming? </p>
+          <p>האם אתה מגיע? </p>
           <input type="radio" name="is_coming" value="true">
-          <label>Yes</label>
+          <label>כן</label>
           <input type="radio" name="is_coming" value="false">
-          <label>No</label>
-          </div>
+          <label>לא</label>
+        </div>
 
         <br>
-          <label>number of people arriving</label>
-          <input type="number" name="number_of_people_arriving" min="0" max="6">
+        <label>מספר האנשים שמגיעים:</label>
+        <input type="number" name="number_of_people_arriving" min="0" max="6">
 
         <input type="submit" value="Send">
 
       </fieldset>
     </form>
-      
+  </div>
 </body>
 </html>

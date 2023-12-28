@@ -1,6 +1,6 @@
 import mongoose, {  Schema } from "mongoose";
 
-export enum ArrivalConfirmed {
+export enum ArrivalConfirmed { //TODO: change it to: arrived, not arrived, maybey, false(initial)
     YES = 'yes', 
     NO = 'no', 
     MAYBE = 'maybe', 

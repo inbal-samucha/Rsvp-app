@@ -1,6 +1,16 @@
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/approval_form.css" rel="stylesheet" type="text/css">
-    <title>rsvp</title>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Bona+Nova&family=Heebo:wght@200&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
+
+    <title><%= pageTitle %></title>
+    <!-- Common CSS files can be included here -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/approval_form.css"> -->
+    <!-- Other common stylesheets -->
+    <% if (pageSpecificCSS) { %>
+        <link rel="stylesheet" type="text/css" href="<%= pageSpecificCSS %>">
+    <% } %>
 </head>

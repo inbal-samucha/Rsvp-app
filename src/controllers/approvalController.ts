@@ -10,7 +10,7 @@ const getApprovalForm = async(req: Request, res: Response, next: NextFunction) =
             throw new Error('No such invited id')
         }
         
-        res.render('approval_form', {invitedId});
+        res.render('example2', {invitedId, invited}); //TODO: לשנות את הטופס ככה שבמקום שיהיה שם פרטי ושם משפחה כקלט להעביר אותו כשם מלא מהבסיס נתונים
     }catch(err){
         console.log(err)
         throw new Error('No such invited id')

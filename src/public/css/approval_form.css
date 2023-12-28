@@ -1,6 +1,9 @@
-form{
-  margin: auto;
-  width: 50%;
+
+div.form
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   direction: rtl;
 }
 
@@ -31,7 +34,7 @@ label:first-of-type{
   margin-top: 0;
 }
 
-button {
+input[type=submit] {
   display: block;
   margin: 15px 0;
   padding: 5px 25px;
@@ -42,7 +45,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+input[type=submit]:hover {
   background-color: #45a049;
 }
 
@@ -67,6 +70,12 @@ input[type=radio]{
 
 input[type=radio]:first-of-type{
   margin-right: 0px;
+}
+
+img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
