@@ -15,7 +15,7 @@ export enum EvenStatus {
     CANCELED = 'canceled', 
 }
 
-const EventSchema: Schema = new Schema(
+const EventSchema: Schema = new Schema(//TODO: add image for event
     {
     type: { type: String, enum: EventName, required: true}, 
     date: { type: Date, required: true},
