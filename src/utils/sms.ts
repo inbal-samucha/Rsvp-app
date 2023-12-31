@@ -76,4 +76,82 @@ export function sendWhatsappWithMetaCloudApi(){
   
 }
 
+export function sendWhatsappTemplateMessageWithMetaCloudApi(){
+  const PhoneNumberID = '192729653925668';
+  const ACCESS_TOKEN = 'EAAUpNh9l4vcBO1UTbFrBfQlaoN88KY4odnqHQKWR79DL5ZBw1FcyqO1xKTEZBLGUpCeMe4BIRU7SbuH7ou85zg6ixum0XrgMlPdxyV9ASRcXZA4AdncTZAYGOeRGTxbnlcaYMSjzhpbGnDrZC8IbLgeu0TWZCV4U0pWdrkgmX9iJOTIflYLhtIyJTyx2OSnJZCPXAYkSrL1JjXg6qzr';
+  const RecipientPhoneNumber = '972523187314'
+
+  const imgUrl = "https://img.freepik.com/free-vector/cute-koala-with-cub-cartoon-icon-illustration_138676-2839.jpg?size=626&ext=jpg";
+  const text1 = "שלמה";
+  const btnUrl = "https://one.co.il"
+
+  const sendMessage = async () => {
+    const messagePayload = 
+      {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to: RecipientPhoneNumber,
+        type: "template",
+        template: {
+          name: "rsvp_custom_template",
+          language: {
+            code: "he"
+          },
+          components: [
+            {
+              type: "header",
+              parameters: [
+                {
+                  type: "image",
+                  image: {
+                    link: imgUrl
+                  }
+                }
+              ]
+            },
+            {
+              type: "body",
+              parameters: [
+                {
+                  type: "text",
+                  text: text1
+                }
+              ]
+            },
+             {
+              type: "button",
+              sub_type: "url",
+              index: "1",
+              parameters: [
+                {
+                  type: "text",
+                  text: btnUrl
+                }
+              ]
+            }
+          ]
+        }
+      };
+  
+    try {
+      const response = await fetch(`https://graph.facebook.com/v17.0/${PhoneNumberID}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(messagePayload)
+      });
+  
+      const data = await response.json();
+      console.log('Message sent successfully:', data);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+  
+  sendMessage();
+  
+}
+
+
 
