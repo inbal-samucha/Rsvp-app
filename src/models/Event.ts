@@ -9,7 +9,7 @@ export enum EventName {
     BIRTHDAY = 'birthday' //יום הולדת
 }
 
-export enum EvenStatus {
+export enum EventStatus {
     UPCOMING = 'upcoming', 
     PAST = 'past', 
     CANCELED = 'canceled', 
@@ -18,11 +18,11 @@ export enum EvenStatus {
 const EventSchema: Schema = new Schema(//TODO: add image for event
     {
     type: { type: String, enum: EventName, required: true}, 
-    date: { type: Date, required: true},//TODO: put only date without hours and minutes //format: 'DD/MM/YYYY'
+    date: { type: Date, required: true},//TODO: put only date without hours and minutes //format: '"YYYY-MM-DD"'
     hosts_name:{ type: String, required: true},
     location: { type: String },
     description: { type: String },
-    status: { type: String, enum: EvenStatus, default:EvenStatus.UPCOMING }//TODO: after the date of the event coming change the staus to past
+    status: { type: String, enum: EventStatus, default:EventStatus.UPCOMING }//TODO: after the date of the event coming change the staus to past
     },
     { 
         timestamps: true

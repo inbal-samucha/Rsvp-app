@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import moment from 'moment';
 import { convertObjToLowerCase } from "../utils/handlerFunction.ts";
 
-import Event from "../models/Event.ts";
+import Event, {EventName, EventStatus} from "../models/Event.ts";
 
 const createEvent = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -48,8 +48,8 @@ const getOneEvent = async (req: Request, res: Response, next: NextFunction) => {
 const updateOneEvent = async (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.id;
 
-    if(req.body.date && moment(req.body.date, 'DD/MM/YYYY').isValid()){
-        var momentDate = moment.utc(req.body.date, "DD/MM/YYYY").format();
+    if(req.body.date && moment(req.body.date, 'YYYY-MM-DD').isValid()){
+        var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
         var newDate = new Date(momentDate)
         req.body.date = newDate;
     }else {
@@ -73,14 +73,16 @@ const deleteOneEvent = async (req: Request, res: Response, next: NextFunction) =
 const getfilterEvents = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const { type, date, location, status, hosts_name } = req.query;
-    
+        console.log(req.query);
+        
         const query : { [key: string]: any } = {};
 
         if (type) {
           query.type = type as string;
         }
         if (date) {
-          const momentDate = moment.utc(date as string , "DD/MM/YYYY").format();
+        //   const momentDate = moment.utc(date as string , "DD/MM/YYYY").format();
+          const momentDate = moment.utc(date as string , "YYYY-MM-DD").format();
           query.date = { $eq: new Date(momentDate) };
         }
         if (location) {
@@ -92,8 +94,6 @@ const getfilterEvents = async(req: Request, res: Response, next: NextFunction) =
         if (hosts_name) {
             query.hosts_name = hosts_name as string;
         }
-
-        console.log(query);
     
 
         const filteredEvents = await Event.find(query);
@@ -105,5 +105,16 @@ const getfilterEvents = async(req: Request, res: Response, next: NextFunction) =
 }
 
 
+const getFormFilterEvents = async(req: Request, res: Response, next: NextFunction) => {
 
-export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent, getfilterEvents };
+    res.render('eventFilter',{
+        data:{
+            eventName: EventName,
+            eventStatus: EventStatus
+        }
+    });
+}
+
+
+export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent, getfilterEvents, getFormFilterEvents };
+

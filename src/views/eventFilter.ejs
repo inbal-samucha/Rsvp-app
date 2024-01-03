@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partitial/head.ejs', { pageTitle: 'approval form',  pageSpecificCSS: '/css/approval_form.css' }) %>
+<body>
+
+    <% Object.keys(data).forEach(key => { %>
+        <li><strong><%= key %>:</strong> <%= data[key] %></li>
+      <% }); %>
+
+    <h1>Filter Events</h1>
+    <form action="/api/event/filter/" method="GET"> <!-- Submitting data to filter events -->
+
+      <label for="eventType">Event Type:</label>
+      <select id="eventType" name="type">
+        <% Object.keys(data.eventName).forEach(key => { %>
+          <option value="<%= data.eventName[key] %>"><%= key %></option>
+        <% }); %>
+      </select><br>
+
+  
+      <label for="date">Date (DD/MM/YYYY):</label>
+      <input type="date" id="date" name="date"><br>
+  
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location"><br>
+  
+      <label for="eventStatus">Event Status:</label>
+      <select id="eventStatus" name="type">
+        <% Object.keys(data.eventStatus).forEach(key => { %>
+          <option value="<%= data.eventStatus[key] %>"><%= key %></option>
+        <% }); %>
+      </select><br>
+  
+      <label for="hosts_name">Host's Name:</label>
+      <input type="text" id="hosts_name" name="hosts_name"><br>
+  
+      <button type="submit">Filter</button>
+    </form>
+
+  <%- include('partitial/footer.ejs') %>
