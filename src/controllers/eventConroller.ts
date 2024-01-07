@@ -72,13 +72,12 @@ const deleteOneEvent = async (req: Request, res: Response, next: NextFunction) =
 
 const getfilterEvents = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const { type, date, location, status, hosts_name } = req.query;
-        console.log(req.query);
+        const { eventType, eventStatus, date, location, status, hosts_name } = req.query;
         
         const query : { [key: string]: any } = {};
 
-        if (type) {
-          query.type = type as string;
+        if (eventType) {
+          query.type = eventType as string;
         }
         if (date) {
         //   const momentDate = moment.utc(date as string , "DD/MM/YYYY").format();
@@ -88,8 +87,8 @@ const getfilterEvents = async(req: Request, res: Response, next: NextFunction) =
         if (location) {
           query.location = location as string;
         }
-        if (status) {
-          query.status = status as string;
+        if (eventStatus) {
+          query.status = eventStatus as string;
         }
         if (hosts_name) {
             query.hosts_name = hosts_name as string;

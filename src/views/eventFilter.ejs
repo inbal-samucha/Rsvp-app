@@ -11,7 +11,8 @@
     <form action="/api/event/filter/" method="GET"> <!-- Submitting data to filter events -->
 
       <label for="eventType">Event Type:</label>
-      <select id="eventType" name="type">
+      <select id="eventType" name="eventType">
+        <option value=""> NONE </option>
         <% Object.keys(data.eventName).forEach(key => { %>
           <option value="<%= data.eventName[key] %>"><%= key %></option>
         <% }); %>
@@ -25,7 +26,8 @@
       <input type="text" id="location" name="location"><br>
   
       <label for="eventStatus">Event Status:</label>
-      <select id="eventStatus" name="type">
+      <select id="eventStatus" name="eventStatus">
+        <option value=""> NONE </option>
         <% Object.keys(data.eventStatus).forEach(key => { %>
           <option value="<%= data.eventStatus[key] %>"><%= key %></option>
         <% }); %>
