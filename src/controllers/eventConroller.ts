@@ -4,23 +4,78 @@ import { convertObjToLowerCase } from "../utils/handlerFunction.ts";
 
 import Event, {EventName, EventStatus} from "../models/Event.ts";
 
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { UploadedFile } from 'express-fileupload';
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const createEvent = async (req: Request, res: Response, next: NextFunction) => {
-
-    if(req.body.date && moment(req.body.date, 'DD/MM/YYYY').isValid()){
-        var momentDate = moment.utc(req.body.date, "DD/MM/YYYY").format();
-        var newDate = new Date(momentDate)
-        req.body.date = newDate;
-    }else {
-        return res.status(400).json({ error: 'Invalid date format' });
-    }
-
     let payload = {...req.body}
+
+    try{
+        if (!req.files || !req.files.image) {
+                  return res.status(400).json({ error: 'No file uploaded.' });
+        }
+            
+        const imageFile: UploadedFile = req.files.image as UploadedFile;
+        const fileBuffer: Buffer = imageFile.data as Buffer;
+
+        const cloudinaryUpload = () => {
+            
+            return new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream({ folder: 'RSVP' }, (error, result) => {
+
+                    if (error) {
+                        console.error('Error uploading to Cloudinary:', error);
+                        reject(error);
+                    } else {       
+                        resolve(result);
+                    }
+                });
+
+                uploadStream.end(fileBuffer);
+
+            });
+        };
+
+        const imageUploadResult: any  = await cloudinaryUpload();
+
+        payload = {
+            ...payload,
+            image:{
+                public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
+                img_url: imageUploadResult.secure_url
+            }
+        }
+
+        if(req.body.date){
+            var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
+            var newDate = new Date(momentDate)
+            req.body.date = newDate;
+        }else {
+            return res.status(400).json({ error: 'Invalid date format' });
+        }
     
-    convertObjToLowerCase(payload); //Note: just if the app in english
+        
+        convertObjToLowerCase(payload); 
 
-    const event = await Event.create(payload);
+        const event = await Event.create(payload);
 
-    return res.status(200).json(event);
+        return res.status(200).json(event);
+        
+    }catch(err){
+        console.log(err);
+        
+       return res.status(500).json({ error: 'Failed to upload to Cloudinary.', err });
+    }
 }
 
 //get all events with option to filter in query
@@ -72,7 +127,7 @@ const deleteOneEvent = async (req: Request, res: Response, next: NextFunction) =
 
 const getfilterEvents = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const { eventType, eventStatus, date, location, status, hosts_name } = req.query;
+        const { eventType, eventStatus, date, location, hosts_name } = req.query;
         
         const query : { [key: string]: any } = {};
 
@@ -80,7 +135,6 @@ const getfilterEvents = async(req: Request, res: Response, next: NextFunction) =
           query.type = eventType as string;
         }
         if (date) {
-        //   const momentDate = moment.utc(date as string , "DD/MM/YYYY").format();
           const momentDate = moment.utc(date as string , "YYYY-MM-DD").format();
           query.date = { $eq: new Date(momentDate) };
         }
@@ -114,6 +168,104 @@ const getFormFilterEvents = async(req: Request, res: Response, next: NextFunctio
     });
 }
 
+const getCreateEvent = async(req: Request, res: Response, next: NextFunction) => {
 
-export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent, getfilterEvents, getFormFilterEvents };
+    res.render('createEvent',{
+        data:{
+            eventName: EventName
+        }
+    });
+}
+
+
+// const getUploadFile = async(req: Request, res: Response, next: NextFunction) => {
+
+//     res.render('fileExample',{
+//         data:{
+//             eventName: EventName
+//         }
+//     });
+// }
+
+
+// const postUploadFile = async (req: Request, res: Response, next: NextFunction) => {
+//     console.log(('innnnn'));
+    
+//     let payload = {...req.body}
+
+//     try{
+//         if (!req.files || !req.files.image) {
+//                   return res.status(400).json({ error: 'No file uploaded.' });
+//         }
+            
+//         const imageFile: UploadedFile = req.files.image as UploadedFile;
+//         const fileBuffer: Buffer = imageFile.data as Buffer;
+
+//         const cloudinaryUpload = () => {
+            
+//             return new Promise((resolve, reject) => {
+//                 const uploadStream = cloudinary.uploader.upload_stream({ folder: 'RSVP' }, (error, result) => {
+
+//                     if (error) {
+//                         console.error('Error uploading to Cloudinary:', error);
+//                         reject(error);
+//                     } else {       
+//                         resolve(result);
+//                     }
+//                 });
+
+//                 uploadStream.end(fileBuffer);
+
+//             });
+//         };
+
+//         const imageUploadResult: any  = await cloudinaryUpload();
+
+//         payload = {
+//             ...payload,
+//             image:{
+//                 public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
+//                 img_url: imageUploadResult.secure_url
+//             }
+//         }
+//         // payload.image.public_id = imageUploadResult.public_id;
+//         // payload.image.img_url = imageUploadResult.secure_url;
+
+//         // const image = await cloudinary.uploader.upload_stream({folder: "RSVP"}, (error, result) => {
+//         //     if(error){
+//         //         console.error('Error uploading to Cloudinary:', error);
+//         //         return res.status(500).json({ error: 'Failed to upload to Cloudinary.' });
+//         //     }
+//         //     payload.image = result;
+//         // console.log('payload', payload);
+//         //     return result;
+//         // }).end(fileBuffer);
+
+//         if(req.body.date){
+//             var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
+//             var newDate = new Date(momentDate)
+//             req.body.date = newDate;
+//         }else {
+//             return res.status(400).json({ error: 'Invalid date format' });
+//         }
+    
+        
+//         convertObjToLowerCase(payload); 
+
+//         const event = await Event.create(payload);
+
+//         return res.status(200).json(event);
+
+//         // return res.status(200).json('success')
+        
+//     }catch(err){
+//         console.log(err);
+        
+//        return res.status(500).json({ error: 'Failed to upload to Cloudinary.', err });
+//     }
+// }
+
+
+export { createEvent, getAllEvents, getOneEvent, updateOneEvent, deleteOneEvent, getfilterEvents, getFormFilterEvents, getCreateEvent };
+
 

@@ -22,7 +22,11 @@ const EventSchema: Schema = new Schema(//TODO: add image for event
     hosts_name:{ type: String, required: true},
     location: { type: String },
     description: { type: String },
-    status: { type: String, enum: EventStatus, default:EventStatus.UPCOMING }//TODO: after the date of the event coming change the staus to past
+    status: { type: String, enum: EventStatus, default:EventStatus.UPCOMING },//TODO: after the date of the event coming change the staus to past
+    image: {
+        public_id: { type: String },
+        img_url: { type: String }
+    }
     },
     { 
         timestamps: true
