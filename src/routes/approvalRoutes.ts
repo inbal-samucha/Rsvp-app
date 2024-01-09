@@ -3,8 +3,8 @@ import { getApprovalForm, postApprovalForm } from '../controllers/approvalContro
 
 const approvalRoutes = express.Router();
 
-approvalRoutes.get('/:invitedId', getApprovalForm);
-approvalRoutes.post('/:invitedId', postApprovalForm);
+approvalRoutes.get('/:id', getApprovalForm);
+approvalRoutes.post('/:id', postApprovalForm);
 // approvalRoutes.get('/', getApprovalForm);
 // approvalRoutes.post('/', postApprovalForm);
 

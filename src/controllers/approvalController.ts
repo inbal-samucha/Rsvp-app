@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import Invitees from "../models/Invitees.ts";
 
 const getApprovalForm = async(req: Request, res: Response, next: NextFunction) => {
-    const invitedId= req.params.invitedId;
+    const invitedId= req.params.id;
 
     try{
         const invited = await Invitees.findById(invitedId).populate('event','image');
@@ -34,7 +34,7 @@ const postApprovalForm = async(req: Request, res: Response, next: NextFunction) 
             arrival_confirmed: isComing,
             number_of_people_arriving: numberOfPeopleArriving
         }
-        const  invited_id  = req.params.invitedId;//invited _id TODO: check if the inviteed id exist
+        const  invited_id  = req.params.id;//invited _id TODO: check if the inviteed id exist
             
         const invited = await Invitees.findByIdAndUpdate(invited_id, payload , { new: true});
 
