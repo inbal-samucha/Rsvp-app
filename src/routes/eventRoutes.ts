@@ -9,16 +9,11 @@ eventRoutes.get('/form', getFormFilterEvents);
 eventRoutes.get('/filter', getfilterEvents);
 eventRoutes.get('/create', getCreateEvent);
 
-// eventRoutes.get('/file', getUploadFile);
-
 
 eventRoutes.get('/:id', getOneEvent);
 eventRoutes.put('/:id', updateOneEvent);
 eventRoutes.delete('/:id', deleteOneEvent);
 eventRoutes.post('/create', createEvent);
-
-// eventRoutes.post('/file', postUploadFile);
-
 
 
 export default eventRoutes;
