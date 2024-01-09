@@ -7,9 +7,9 @@ import Invitees from "../models/Invitees.ts";
 
 
 const createInvitees = async (req: Request, res: Response, next: NextFunction) => {
-    const { first_name, last_name, email, phone, event_id} = req.body;
+    const { first_name, last_name, email, phone, eventId} = req.body;
     
-    const invitee = await Invitees.create({ first_name, last_name, email, phone, event_id });
+    const invitee = await Invitees.create({ first_name, last_name, email, phone, event: eventId });
 
     return res.status(200).json(invitee);
 }
@@ -21,8 +21,9 @@ const getAllInvitees = async (req: Request, res: Response, next: NextFunction) =
     if(!event){ 
         throw new Error('No such event id')
     }
+console.log(event);
 
-    const invitees = await Invitees.find({ eventId, ...req.query }); //find invitees by filter of req.query (like arrival_confirmed)
+    const invitees = await Invitees.find({ event:eventId, ...req.query }); //find invitees by filter of req.query (like arrival_confirmed)
 
     return res.status(200).json(invitees);
 }

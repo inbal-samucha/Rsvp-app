@@ -2,10 +2,10 @@
 <html lang="en">
 <%- include('partitial/head.ejs' , { pageTitle: 'Example2', pageSpecificCSS: '/css/example2.css' }) %>
 <body>
-  
+  <%= invited%>
     <div class="container" id="container">
 		<div class="form-container log-in-container">
-			<form method="post" action="/api/approval/<%= invitedId %>">
+			<form method="post" action="/api/approval/<%= invited._id %>">
 				<h1>אישור הגעה</h1>
 				<span>אנא אשר הגעתך</span>
 
@@ -36,7 +36,7 @@
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
-                    <img src="https://i.pinimg.com/564x/59/32/29/593229739184504afd9507cc42a9cb86.jpg">
+                    <img src="<%= invited.event.image.img_url %>">
 				</div>
 			</div>
 		</div>
