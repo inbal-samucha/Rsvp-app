@@ -2,7 +2,6 @@
 <html lang="en">
 <%- include('partitial/head.ejs' , { pageTitle: 'Example2', pageSpecificCSS: '/css/example2.css' }) %>
 <body>
-  <%= invited%>
     <div class="container" id="container">
 		<div class="form-container log-in-container">
 			<form method="post" action="/api/approval/<%= invited._id %>">

@@ -3,7 +3,6 @@ import Invitees from "../models/Invitees.ts";
 
 const getApprovalForm = async(req: Request, res: Response, next: NextFunction) => {
     const invitedId= req.params.invitedId;
-console.log(invitedId);
 
     try{
         const invited = await Invitees.findById(invitedId).populate('event','image');
