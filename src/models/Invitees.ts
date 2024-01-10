@@ -30,7 +30,7 @@ const InviteesSchema: Schema = new Schema(
         required: true,
         validate: {
             validator: checkCredentials,
-            message: (props: { value: string }) => `${props.value} is not a valid phone number! it need to be 10 numbers`
+            message: (props: { value: string }) => `${props.value} is not a valid phone number! it need to be 10 numbers and begin with 05`
         } },
     arrival_confirmed: { type: String, enum: ArrivalConfirmed , default: ArrivalConfirmed.INITIAL },
     number_of_people_arriving: { type: Number, default: 1}, //TODO: check if defult = 1
@@ -45,8 +45,9 @@ const InviteesSchema: Schema = new Schema(
 InviteesSchema.index({phone: 1, event: 1}, {unique: true});
 
 function checkCredentials(value: string) {
-    if (value && value.length === 10) {
-       if (value.length == 10)
+    const regex2 = new RegExp("^05[0-9]{8}$", "g");
+
+    if (regex2.test(value)) {
        return true
     }
     return false; 
