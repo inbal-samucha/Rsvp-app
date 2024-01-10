@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { UploadedFile } from 'express-fileupload';
+import Invitees from "../models/Invitees.ts";
 
 
 cloudinary.config({
@@ -21,7 +22,7 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
     let payload = {...req.body}
 
     try{
-        if (!req.files || !req.files.image) {
+        if (!req.files || !req.files.image) { //TODO: this is not need to be required, if user not upload image put defualt image
                   return res.status(400).json({ error: 'No file uploaded.' });
         }
             
@@ -56,12 +57,15 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
             }
         }
 
-        if(req.body.date){
-            var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
-            var newDate = new Date(momentDate)
-            req.body.date = newDate;
-        }else {
-            return res.status(400).json({ error: 'Invalid date format' });
+        if(req.body.date && moment(req.body.date, 'YYYY-MM-DD').isValid()){
+            if(moment(req.body.date, 'YYYY-MM-DD').isValid()){
+                var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
+                var newDate = new Date(momentDate)
+                req.body.date = newDate;
+            }else{
+                return res.status(400).json({ error: 'Invalid date format' });
+    
+            }
         }
     
         
@@ -102,13 +106,16 @@ const getOneEvent = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateOneEvent = async (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.id;
-
+    
     if(req.body.date && moment(req.body.date, 'YYYY-MM-DD').isValid()){
-        var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
-        var newDate = new Date(momentDate)
-        req.body.date = newDate;
-    }else {
-        return res.status(400).json({ error: 'Invalid date format' });
+        if(moment(req.body.date, 'YYYY-MM-DD').isValid()){
+            var momentDate = moment.utc(req.body.date, "YYYY-MM-DD").format();
+            var newDate = new Date(momentDate)
+            req.body.date = newDate;
+        }else{
+            return res.status(400).json({ error: 'Invalid date format' });
+
+        }
     }
   
     

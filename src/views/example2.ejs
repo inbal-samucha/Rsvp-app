@@ -4,7 +4,7 @@
 <body>
     <div class="container" id="container">
 		<div class="form-container log-in-container">
-			<form method="post" action="/api/approval/<%= invited._id %>">
+			<form method="post" action="/api/approval/<%= invitee._id %>">
 				<h1>אישור הגעה</h1>
 				<span>אנא אשר הגעתך</span>
 
@@ -35,7 +35,7 @@
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
-                    <img src="<%= invited.event.image.img_url %>">
+                    <img src="<%= invitee.event.image.img_url %>">
 				</div>
 			</div>
 		</div>

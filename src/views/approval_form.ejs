@@ -4,18 +4,18 @@
 <body>
     <h1>Form</h1>
 
-    <p> invited id: <%= invitedId %>
-        fname: <%= invited.first_name %>
+    <p> invitee id: <%= inviteeId %>
+        fname: <%= invitee.first_name %>
     </p>
 
     <img src="https://play-lh.googleusercontent.com/F08xzOXf7dciZyw-BgIKalkQlkpCmAzQMfaTa2B-lc4yp-05O80XWUCntHkGH61CwyM" >
 
     <div class="form">
-    <form method="post" action="/api/approval/<%= invitedId %>">
+    <form method="post" action="/api/approval/<%= inviteeId %>">
       <fieldset>
       <legend>אישור הגעה</legend>
 
-      <p>שלום <%= invited.first_name %> <%= invited.last_name %> אנא אשר הגעתך</p>
+      <p>שלום <%= invitee.first_name %> <%= invitee.last_name %> אנא אשר הגעתך</p>
 
         <div class="check">
           <p>האם אתה מגיע? </p>

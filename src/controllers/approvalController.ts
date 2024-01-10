@@ -2,19 +2,19 @@ import { Response, Request, NextFunction } from "express";
 import Invitees from "../models/Invitees.ts";
 
 const getApprovalForm = async(req: Request, res: Response, next: NextFunction) => {
-    const invitedId= req.params.id;
+    const inviteeId= req.params.id;
 
     try{
-        const invited = await Invitees.findById(invitedId).populate('event','image');
+        const invitee = await Invitees.findById(inviteeId).populate('event','image');
         
-        if(!invited){
-            throw new Error('No such invited id')
+        if(!invitee){
+            throw new Error('No such invitee id')
         }
         
-        res.render('example2', {invitedId, invited}); //TODO: לשנות את הטופס ככה שבמקום שיהיה שם פרטי ושם משפחה כקלט להעביר אותו כשם מלא מהבסיס נתונים
+        res.render('example2', {inviteeId, invitee}); //TODO: לשנות את הטופס ככה שבמקום שיהיה שם פרטי ושם משפחה כקלט להעביר אותו כשם מלא מהבסיס נתונים
     }catch(err){
         console.log(err)
-        throw new Error('No such invited id')
+        throw new Error('No such invitee id')
     }
 
 }
@@ -34,9 +34,9 @@ const postApprovalForm = async(req: Request, res: Response, next: NextFunction) 
             arrival_confirmed: isComing,
             number_of_people_arriving: numberOfPeopleArriving
         }
-        const  invited_id  = req.params.id;//invited _id TODO: check if the inviteed id exist
+        const  invitee_id  = req.params.id;//invitee _id TODO: check if the invitee id exist
             
-        const invited = await Invitees.findByIdAndUpdate(invited_id, payload , { new: true});
+        const invitee = await Invitees.findByIdAndUpdate(invitee_id, payload , { new: true});
 
         res.render('thankyou')
     }catch(err){

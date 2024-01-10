@@ -15,5 +15,4 @@ eventRoutes.put('/:id', updateOneEvent);
 eventRoutes.delete('/:id', deleteOneEvent);
 eventRoutes.post('/create', createEvent);
 
-
 export default eventRoutes;

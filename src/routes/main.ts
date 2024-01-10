@@ -7,7 +7,7 @@ import approvalRoutes from './approvalRoutes.ts';
 const router = express.Router();
 
 router.use("/event", eventRoutes);
-router.use("/invitees", inviteesRoutes);
+router.use("/event", inviteesRoutes);
 router.use("/approval", approvalRoutes);
 
 export default router;

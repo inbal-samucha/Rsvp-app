@@ -5,9 +5,9 @@ import Invitees from "../models/Invitees.ts";
 
 
 
-
 const createInvitees = async (req: Request, res: Response, next: NextFunction) => {
-    const { first_name, last_name, email, phone, eventId} = req.body;
+    const  eventId  = req.params.id; 
+    const { first_name, last_name, email, phone} = req.body;
     
     const invitee = await Invitees.create({ first_name, last_name, email, phone, event: eventId });
 
@@ -28,22 +28,24 @@ console.log(event);
     return res.status(200).json(invitees);
 }
 
-const updateOneInvited = async (req: Request, res: Response, next: NextFunction) => {
-    const  invitedId  = req.params.id;//invited _id
+const updateOneInvitee = async (req: Request, res: Response, next: NextFunction) => {
+    const  inviteeId  = req.params.inveteeId;//invitee _id
+    const  eventId  = req.params.id;//event id
 
-    const invited = await Invitees.findByIdAndUpdate(invitedId, { $set: req.body }, { new: true});
+    const invitee = await Invitees.findOneAndUpdate({_id: inviteeId, event: eventId}, { $set: req.body }, { new: true});
 
-    return res.status(200).json(invited);
+    return res.status(200).json(invitee);
 }
 
-const deleteOneInvited = async (req: Request, res: Response, next: NextFunction) => {
-    const  invitedId  = req.params.id; //invited_id
-    
-    const invited = await Invitees.findByIdAndDelete( invitedId );
+const deleteOneInvitee = async (req: Request, res: Response, next: NextFunction) => {
+    const  inviteeId  = req.params.inveteeId; //invitee
+    const  eventId  = req.params.id; //event
 
-    return res.status(200).json({ message: 'ivitess id deleted'});
+    const invitee = await Invitees.findOneAndDelete( {_id: inviteeId, event: eventId});
+
+    return res.status(200).json({ invitee, message: 'invitee deleted'});
 }
 
 
 
-export { createInvitees, getAllInvitees, updateOneInvited, deleteOneInvited };
+export { createInvitees, getAllInvitees, updateOneInvitee, deleteOneInvitee };
