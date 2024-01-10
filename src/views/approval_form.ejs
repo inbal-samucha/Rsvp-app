@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('partitial/head.ejs', { pageTitle: 'approval form',  pageSpecificCSS: '/css/approval_form.css' }) %>
+<%- include('partitial/head.ejs' , { pageTitle: 'Approval form', pageSpecificCSS: '/css/approval_form.css' }) %>
 <body>
-    <h1>Form</h1>
+    <div class="container" id="container">
+		<div class="form-container log-in-container">
+			<form method="post" action="/api/approval/<%= invitee._id %>">
+				<h1>אישור הגעה</h1>
+				<span>אנא אשר הגעתך</span>
 
-    <p> invitee id: <%= inviteeId %>
-        fname: <%= invitee.first_name %>
-    </p>
+                <div class="check" id="radioGroup">
+                    <p>האם אתה מגיע? </p>
 
-    <img src="https://play-lh.googleusercontent.com/F08xzOXf7dciZyw-BgIKalkQlkpCmAzQMfaTa2B-lc4yp-05O80XWUCntHkGH61CwyM" >
+                    <div class="wrap">
+                    <input type="radio" name="is_coming" value="true">
+                    <label>כן</label>
+                    </div>
 
-    <div class="form">
-    <form method="post" action="/api/approval/<%= inviteeId %>">
-      <fieldset>
-      <legend>אישור הגעה</legend>
+                    <div class="wrap">
+                    <input type="radio" name="is_coming" value="false">
+                    <label>לא</label>
+                    </div> 
 
-      <p>שלום <%= invitee.first_name %> <%= invitee.last_name %> אנא אשר הגעתך</p>
-
-        <div class="check">
-          <p>האם אתה מגיע? </p>
-          <input type="radio" name="is_coming" value="true">
-          <label>כן</label>
-          <input type="radio" name="is_coming" value="false">
-          <label>לא</label>
-        </div>
+                </div>
 
         <br>
         <label>מספר האנשים שמגיעים:</label>
-        <input type="number" name="number_of_people_arriving" min="0" max="6">
+        <input id="count_input" type="number" name="number_of_people_arriving" min="0" max="6">
 
-        <input type="submit" value="Send">
+        <input type="submit" value="שלח">
 
-      </fieldset>
-    </form>
-  </div>
-  <%- include('partitial/footer.ejs') %>
+		</form>
+		</div>
+
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-right">
+                    <img src="<%= invitee.event.image.img_url %>">
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <%- include('partitial/footer.ejs') %>
