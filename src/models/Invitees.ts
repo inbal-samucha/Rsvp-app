@@ -2,7 +2,7 @@ import mongoose, {  Schema } from "mongoose";
 
 import libphonenumber from 'google-libphonenumber';
 
-export enum ArrivalConfirmed { //TODO: change it to: arrived, not arrived, maybey, false(initial)
+export enum ArrivalConfirmed { 
     YES = 'yes', 
     NO = 'no', 
     MAYBE = 'maybe', 
@@ -24,7 +24,14 @@ const InviteesSchema: Schema = new Schema(
     first_name: { type: String, required: true},
     last_name: { type: String, required: true},
     email: { type: String},
-    phone: { type: String, required: true }, //TODO: when the client write the phone number you need to change it to +972 for sending to him sms. //TODO: i cant send the same phone for 2 difference events, fix it.
+    phone: 
+    { 
+        type: String, 
+        required: true,
+        validate: {
+            validator: checkCredentials,
+            message: (props: { value: string }) => `${props.value} is not a valid phone number! it need to be 10 numbers`
+        } },
     arrival_confirmed: { type: String, enum: ArrivalConfirmed , default: ArrivalConfirmed.INITIAL },
     number_of_people_arriving: { type: Number, default: 1}, //TODO: check if defult = 1
     event: { type: Schema.Types.ObjectId, required: true, ref: 'events'}
@@ -37,6 +44,13 @@ const InviteesSchema: Schema = new Schema(
 
 InviteesSchema.index({phone: 1, event: 1}, {unique: true});
 
+function checkCredentials(value: string) {
+    if (value && value.length === 10) {
+       if (value.length == 10)
+       return true
+    }
+    return false; 
+ }
 
 const modifyPhone = function (doc: any, type: string) {
     var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
