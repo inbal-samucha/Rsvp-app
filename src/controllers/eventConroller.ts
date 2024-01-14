@@ -1,14 +1,15 @@
-import { NextFunction, Request, Response } from "express";
 import moment from 'moment';
+import dotenv from 'dotenv';
+dotenv.config();
+import { v2 as cloudinary } from 'cloudinary';
+import { UploadedFile } from 'express-fileupload';
+import { NextFunction, Request, Response } from "express";
+
+import { HttpCode } from "../utils/errors/CustomError.ts";
+import ExeptionError from "../utils/errors/ExeptionError.ts";
 import { convertObjToLowerCase } from "../utils/handlerFunction.ts";
 
 import Event, {EventName, EventStatus} from "../models/Event.ts";
-
-import { v2 as cloudinary } from 'cloudinary';
-import dotenv from 'dotenv';
-dotenv.config();
-
-import { UploadedFile } from 'express-fileupload';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -19,7 +20,7 @@ cloudinary.config({
 const createEvent = async (req: Request, res: Response, next: NextFunction) => {
     let payload = {...req.body}
 
-    try{
+   
       
         if(req.files && req.files.image){
 
@@ -32,8 +33,7 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
                     const uploadStream = cloudinary.uploader.upload_stream({ folder: 'RSVP' }, (error, result) => {
     
                         if (error) {
-                            console.error('Error uploading to Cloudinary:', error);
-                            reject(error);
+                            reject(new ExeptionError({code: HttpCode.BAD_REQUEST, message: "Error uploading to Cloudinary:", logging: true}));
                         } else {       
                             resolve(result);
                         }
@@ -44,13 +44,17 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
                 });
             };
     
-            const imageUploadResult: any  = await cloudinaryUpload();
-            payload = {
-                ...payload,
-                image:{
-                    public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
-                    img_url: imageUploadResult.secure_url
+            try{
+                const imageUploadResult: any  = await cloudinaryUpload();
+                payload = {
+                    ...payload,
+                    image:{
+                        public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
+                        img_url: imageUploadResult.secure_url
+                    }
                 }
+            }catch(err){
+                next(err); //TODO: check if i can remove the next(err) and try and catch because my error hanler
             }
         }
 
@@ -61,8 +65,7 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
                 var newDate = new Date(momentDate)
                 req.body.date = newDate;
             }else{
-                return res.status(400).json({ error: 'Invalid date format' });
-    
+                throw new ExeptionError({code: HttpCode.BAD_REQUEST, message: "Invalid date format", logging: true});
             }
         }
     
@@ -72,12 +75,6 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
         const event = await Event.create(payload);
 
         return res.status(200).json(event);
-        
-    }catch(err){
-        console.log(err);
-        
-       return res.status(500).json({ error: 'Failed to upload to Cloudinary.', err });
-    }
 }
 
 //get all events with option to filter in query
@@ -87,6 +84,9 @@ const getAllEvents = async (req: Request, res: Response, next: NextFunction) => 
     convertObjToLowerCase(filterObj); //Note: just if the app in english
 
     const events = await Event.find({...filterObj}); 
+    if(!events){
+        throw new ExeptionError({code: HttpCode.NOT_FOUND, message: "event not found", logging: true});
+    }
 
     return res.status(200).json(events);
 }
@@ -95,8 +95,8 @@ const getOneEvent = async (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.id;
     
     const event = await Event.findById(eventId); 
-    if(!event){ //TODO: error handling
-        throw new Error('No such event id')
+    if(!event){ 
+        throw new ExeptionError({code: HttpCode.BAD_REQUEST, message: "No such event id", logging: true});
     }
 
     return res.status(200).json(event);
@@ -111,13 +111,15 @@ const updateOneEvent = async (req: Request, res: Response, next: NextFunction) =
             var newDate = new Date(momentDate)
             req.body.date = newDate;
         }else{
-            return res.status(400).json({ error: 'Invalid date format' });
-
+            throw new ExeptionError({code: HttpCode.BAD_REQUEST, message: "Invalid date format", logging: true});
         }
     }
   
     
     const event = await Event.findByIdAndUpdate(eventId, {$set:req.body}, {new:true});
+    if(!event){ 
+        throw new ExeptionError({code: HttpCode.BAD_REQUEST, message: "No such event id", logging: true});
+    }
 
     return res.status(200).json(event);
 }
@@ -125,13 +127,16 @@ const updateOneEvent = async (req: Request, res: Response, next: NextFunction) =
 const deleteOneEvent = async (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.id;
 
-    await Event.findByIdAndDelete(eventId);
+    const event = await Event.findByIdAndDelete(eventId);
+    if(!event){ 
+        throw new ExeptionError({code: HttpCode.BAD_REQUEST, message: "No such event id", logging: true});
+    }
 
     return res.status(200).json({message: 'event was deleted'});
 }
 
 const getfilterEvents = async(req: Request, res: Response, next: NextFunction) => {
-    try {
+
         const { eventType, eventStatus, date, location, hosts_name } = req.query;
         
         const query : { [key: string]: any } = {};
@@ -155,11 +160,8 @@ const getfilterEvents = async(req: Request, res: Response, next: NextFunction) =
     
 
         const filteredEvents = await Event.find(query);
-    
+
         res.json(filteredEvents);
-      } catch (error) {
-        res.status(500).json({ error });
-      }
 }
 
 

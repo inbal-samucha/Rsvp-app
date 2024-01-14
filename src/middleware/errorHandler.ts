@@ -13,7 +13,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
             }, null, 2));
         }
 
-        return res.status(statusCode).send({ errors });
+        return res.status(statusCode).send({ code: err.statusCode, errors });
     }
    
     console.error(JSON.stringify(err, null, 2));
