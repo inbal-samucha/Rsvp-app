@@ -6,9 +6,7 @@ const getApprovalForm = async(req: Request, res: Response, next: NextFunction) =
     const inviteeId= req.params.id;
 
     try{
-        console.log('event id ',eventId);
-        console.log('inviteeId ',inviteeId);
-        
+
         const invitee = await Invitees.findOne({_id: inviteeId, event: eventId}).populate('event','image');
         
         if(!invitee){
@@ -29,12 +27,10 @@ const postApprovalForm = async(req: Request, res: Response, next: NextFunction) 
     
     try{
         let isComing = false;
-        let numberOfPeopleArriving = 1;
+        let numberOfPeopleArriving = 0;
         if(req.body.is_coming === 'true'){
             isComing = true;
-            numberOfPeopleArriving = +(req.body.number_of_people_arriving)
-        }else{
-            numberOfPeopleArriving = 0;
+            numberOfPeopleArriving = +(req.body.number_of_people_arriving) + 1; //the person + number of people arriving
         }
     
         const payload ={

@@ -20,10 +20,7 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
     let payload = {...req.body}
 
     try{
-        // if (!req.files || !req.files.image) { //TODO: this is not need to be required, if user not upload image put defualt image
-        //           return res.status(400).json({ error: 'No file uploaded.' });
-        // }
-            
+      
         if(req.files && req.files.image){
 
             const imageFile: UploadedFile = req.files.image as UploadedFile;

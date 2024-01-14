@@ -12,20 +12,20 @@
                     <p>האם אתה מגיע? </p>
 
                     <div class="wrap">
-                    <input type="radio" name="is_coming" value="true">
+                    <input type="radio" name="is_coming" value="true" onclick="toggleInput(true)">
                     <label>כן</label>
                     </div>
 
                     <div class="wrap">
-                    <input type="radio" name="is_coming" value="false">
+                    <input type="radio" name="is_coming" value="false" onclick="toggleInput(false)">
                     <label>לא</label>
                     </div> 
 
                 </div>
 
         <br>
-        <label>מספר האנשים שמגיעים:</label>
-        <input id="count_input" type="number" name="number_of_people_arriving" min="0" max="6">
+        <label>האם אתה מגיע עם עוד אנשים, אם כן עם כמה?</label>
+        <input id="number_of_people_arriving_input" type="number" name="number_of_people_arriving" min="0" max="6" value="0" disabled>
 
         <input type="submit" value="שלח">
 
@@ -40,5 +40,17 @@
 			</div>
 		</div>
 	</div>
+
+    <script>
+        function toggleInput(isComing) {
+            var countInput = document.getElementById('number_of_people_arriving_input');
+            if (!isComing) {
+            // If not coming, disable and set the value to 0
+            countInput.value = 0;
+        }
+
+        countInput.disabled = !isComing;
+        }
+    </script>
 
     <%- include('partitial/footer.ejs') %>

@@ -15,10 +15,10 @@ export enum EventStatus {
     CANCELED = 'canceled', 
 }
 
-const EventSchema: Schema = new Schema(//TODO: add image for event
+const EventSchema: Schema = new Schema(
     {
     type: { type: String, enum: EventName, required: true}, 
-    date: { type: Date, required: true},//TODO: put only date without hours and minutes //format: '"YYYY-MM-DD"'
+    date: { type: Date, required: true},
     hosts_name:{ type: String, required: true},
     location: { type: String },
     description: { type: String },
