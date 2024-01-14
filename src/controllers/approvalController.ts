@@ -10,13 +10,12 @@ const getApprovalForm = async(req: Request, res: Response, next: NextFunction) =
         const invitee = await Invitees.findOne({_id: inviteeId, event: eventId}).populate('event','image');
         
         if(!invitee){
-            throw new Error('No such invitee id')
+            return next(new Error('No such invitee id'));
         }
         
         res.render('approval_form', {invitee, eventId}); //TODO: לשנות את הטופס ככה שבמקום שיהיה שם פרטי ושם משפחה כקלט להעביר אותו כשם מלא מהבסיס נתונים
     }catch(err){
-        console.log(err)
-        throw new Error('No such invitee id')
+        next(err)
     }
 
 }

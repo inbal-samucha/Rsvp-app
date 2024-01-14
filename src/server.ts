@@ -4,10 +4,13 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
+import fileUpload from 'express-fileupload';
+
+import 'express-async-errors';
 
 import apiRoutes from './routes/main.ts';
+import { errorHandler } from './middleware/errorHandler.ts';
 
-import fileUpload from 'express-fileupload';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +35,8 @@ mongoose.connect(MONGO_URL)
 
 
 app.use("/api", apiRoutes);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`app is listening to port ${port}`)
