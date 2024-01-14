@@ -24,8 +24,8 @@ const EventSchema: Schema = new Schema(//TODO: add image for event
     description: { type: String },
     status: { type: String, enum: EventStatus, default:EventStatus.UPCOMING },//TODO: after the date of the event coming change the staus to past
     image: {
-        public_id: { type: String },
-        img_url: { type: String }
+        public_id: { type: String, default: 'save_the_date_defualt'},
+        img_url: { type: String, default: 'https://res.cloudinary.com/dc44zxbf0/image/upload/v1705219965/RSVP/save_the_date_defualt.jpg' }
     }
     },
     { 

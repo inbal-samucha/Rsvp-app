@@ -9,8 +9,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { UploadedFile } from 'express-fileupload';
-import Invitees from "../models/Invitees.ts";
-
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -22,40 +20,43 @@ const createEvent = async (req: Request, res: Response, next: NextFunction) => {
     let payload = {...req.body}
 
     try{
-        if (!req.files || !req.files.image) { //TODO: this is not need to be required, if user not upload image put defualt image
-                  return res.status(400).json({ error: 'No file uploaded.' });
-        }
+        // if (!req.files || !req.files.image) { //TODO: this is not need to be required, if user not upload image put defualt image
+        //           return res.status(400).json({ error: 'No file uploaded.' });
+        // }
             
-        const imageFile: UploadedFile = req.files.image as UploadedFile;
-        const fileBuffer: Buffer = imageFile.data as Buffer;
+        if(req.files && req.files.image){
 
-        const cloudinaryUpload = () => {
-            
-            return new Promise((resolve, reject) => {
-                const uploadStream = cloudinary.uploader.upload_stream({ folder: 'RSVP' }, (error, result) => {
-
-                    if (error) {
-                        console.error('Error uploading to Cloudinary:', error);
-                        reject(error);
-                    } else {       
-                        resolve(result);
-                    }
+            const imageFile: UploadedFile = req.files.image as UploadedFile;
+            const fileBuffer: Buffer = imageFile.data as Buffer;
+    
+            const cloudinaryUpload = () => {
+                
+                return new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.uploader.upload_stream({ folder: 'RSVP' }, (error, result) => {
+    
+                        if (error) {
+                            console.error('Error uploading to Cloudinary:', error);
+                            reject(error);
+                        } else {       
+                            resolve(result);
+                        }
+                    });
+    
+                    uploadStream.end(fileBuffer);
+    
                 });
-
-                uploadStream.end(fileBuffer);
-
-            });
-        };
-
-        const imageUploadResult: any  = await cloudinaryUpload();
-
-        payload = {
-            ...payload,
-            image:{
-                public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
-                img_url: imageUploadResult.secure_url
+            };
+    
+            const imageUploadResult: any  = await cloudinaryUpload();
+            payload = {
+                ...payload,
+                image:{
+                    public_id: imageUploadResult.public_id, //TODO: change the public id using the optins in cloudinary
+                    img_url: imageUploadResult.secure_url
+                }
             }
         }
+
 
         if(req.body.date && moment(req.body.date, 'YYYY-MM-DD').isValid()){
             if(moment(req.body.date, 'YYYY-MM-DD').isValid()){
