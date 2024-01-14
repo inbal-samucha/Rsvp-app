@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 
-import { HttpCode } from "../utils/errors/CustomError.ts";
-import ExeptionError from "../utils/errors/ExeptionError.ts";
+import ExeptionError, { HttpCode } from "../utils/errors/ExeptionError.ts";
 
 import Invitees from "../models/Invitees.ts";
 

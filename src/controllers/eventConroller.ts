@@ -5,8 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { UploadedFile } from 'express-fileupload';
 import { NextFunction, Request, Response } from "express";
 
-import { HttpCode } from "../utils/errors/CustomError.ts";
-import ExeptionError from "../utils/errors/ExeptionError.ts";
+import ExeptionError, { HttpCode } from "../utils/errors/ExeptionError.ts";
 import { convertObjToLowerCase } from "../utils/handlerFunction.ts";
 
 import Event, {EventName, EventStatus} from "../models/Event.ts";

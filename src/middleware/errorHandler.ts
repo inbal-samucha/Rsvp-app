@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../utils/errors/CustomError.ts";
+import ExeptionError from "../utils/errors/ExeptionError.ts";
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log('error handler ', err);
-    if(err instanceof CustomError){
+    if(err instanceof ExeptionError){
         const { statusCode, errors, logging} = err;
         if(logging){
             console.log(JSON.stringify({
