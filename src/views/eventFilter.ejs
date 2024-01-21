@@ -2,14 +2,8 @@
 <html lang="en">
 <%- include('partitial/head.ejs', { pageTitle: 'approval form',  pageSpecificCSS: '/css/approval_form.css' }) %>
 <body>
-
-    <% Object.keys(data).forEach(key => { %>
-        <li><strong><%= key %>:</strong> <%= data[key] %></li>
-      <% }); %>
-
-    <h1>Filter Events</h1>
     <form action="/api/event/filter/" method="GET"> <!-- Submitting data to filter events -->
-
+      <h1>Filter Events</h1>
       <label for="eventType">Event Type:</label>
       <select id="eventType" name="eventType">
         <option value=""> NONE </option>
