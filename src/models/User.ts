@@ -28,12 +28,7 @@ const schema = new Schema <IUser, UserModel> (
         role: { type: String, enum: UserRole, default: UserRole.USER, required: true},
     },
     {
-        timestamps: true,
-        // statics:{
-        //     async comparePasswords (candidatePassword, hashedPassword) {
-        //         return await bcrypt.compare(candidatePassword, hashedPassword);
-        //       }
-        // }
+        timestamps: true
     }
 );
 
@@ -41,16 +36,8 @@ schema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, 12);
 });
 
-// schema.statics.comparePasswords = async function (candidatePassword, hashedPassword) {
-//     return await bcrypt.compare(candidatePassword, hashedPassword);
-// }
 schema.static('comparePasswords', async function comparePasswords(candidatePassword, hashedPassword) {
-    console.log('candidatePassword ', candidatePassword);
-    console.log('hashedPassword ', hashedPassword);
-    
-    const t = await bcrypt.compare(candidatePassword, hashedPassword);
-    console.log(t);
-    return t;
+    return await bcrypt.compare(candidatePassword, hashedPassword);;
   });
   
 

@@ -6,7 +6,6 @@ import ExeptionError, { HttpCode } from "../utils/errors/ExeptionError.ts";
 
 export const authUser = async (req: Request, res: Response, next: NextFunction) => {
     let access_token;
-    console.log(req.cookies);
     
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         access_token = req.headers.authorization.split('')[1];
